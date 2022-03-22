@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class LeanEffects implements Listener {
-    public static final float CHANCE = 1000;
+    public static final float CHANCE = 300;
     public static final UUID MODUUID = UUID.fromString("c8f9f8e0-e9b9-11e9-b210-d663bd873d93");
 
     public final Map<Player, Integer> leanLevel;
@@ -309,6 +309,7 @@ public class LeanEffects implements Listener {
         leanLevel.get(player);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void applyLeanLevel(Player player) {
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + leanLevel.get(player));
         for (AttributeModifier modifier : player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getModifiers()) {
