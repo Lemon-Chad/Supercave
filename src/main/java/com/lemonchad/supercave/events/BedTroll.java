@@ -33,7 +33,7 @@ public class BedTroll implements Listener {
     @EventHandler
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
         double chance = Math.random();
-        if (chance < 1 / CHANCE) {
+        if (chance < 1f / CHANCE) {
             event.getPlayer().sendMessage(ChatColor.RED + "skill issue.");
             TROLLED.add(event.getPlayer());
             Bukkit.getScheduler().scheduleSyncDelayedTask(Supercave.INSTANCE, () -> {

@@ -1,7 +1,6 @@
 package com.lemonchad.supercave.events;
 
-import com.lemonchad.supercave.entities.LeanZombie;
-import org.bukkit.Bukkit;
+import com.lemonchad.supercave.entities.LeanKing;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -57,7 +56,7 @@ public class LeanBoss implements Listener {
         entity.setHealth(80);
         entity.setRemoveWhenFarAway(false);
         location.getWorld().spawnParticle(org.bukkit.Particle.SMOKE_NORMAL, location, 50, 0.5, 0.5, 0.5, 0.1);
-        new LeanZombie(entity);
+        new LeanKing(entity);
     }
 
     private boolean blockAt(Location location, Material material) {

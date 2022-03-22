@@ -51,7 +51,7 @@ public class LeanEffects implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Monster && Math.random() < 1 / CHANCE) {
+        if (event.getEntity() instanceof Monster && Math.random() < 1f / CHANCE) {
             // Summon lean on death spot
             World world = event.getEntity().getWorld();
             world.dropItem(event.getEntity().getLocation(), SupercaveItems.LEAN);
