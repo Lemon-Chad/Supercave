@@ -115,7 +115,6 @@ public class LeanKing {
         }
 
         actionChances.forEach((action, chance) -> actionChances.put(action, chance * 2));
-        Bukkit.getLogger().info(actionChances.toString());
 
         gamma *= 0.99;
         if (gamma * decisionBoundary > Math.random()) {
