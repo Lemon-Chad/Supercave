@@ -56,7 +56,7 @@ public class LeanBoss implements Listener {
         entity.setMaxHealth(80);
         entity.setHealth(80);
         entity.setRemoveWhenFarAway(false);
-        location.getWorld().spawnParticle(org.bukkit.Particle.SMOKE_NORMAL, location, 10);
+        location.getWorld().spawnParticle(org.bukkit.Particle.SMOKE_NORMAL, location, 50, 0.5, 0.5, 0.5, 0.1);
         new LeanZombie(entity);
     }
 
