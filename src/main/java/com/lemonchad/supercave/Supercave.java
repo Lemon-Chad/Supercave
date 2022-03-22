@@ -10,6 +10,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
+import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
@@ -45,6 +46,7 @@ public final class Supercave extends JavaPlugin {
             e.getWorld().playSound(e.getLocation(), Sound.ENTITY_SPIDER_HURT, 1, 0.5f);
             e.getWorld().spawnParticle(Particle.CLOUD, e.getLocation(), 15, 0.5, 0.5, 0.5, 0);
             Bukkit.getScheduler().runTaskLater(INSTANCE, () -> {
+                if (e.isDead()) return;
                 CobwebProjectile projectile = new CobwebProjectile(e, e.getLocation());
                 projectile.setVelocity(e.getLocation().getDirection().multiply(2.25).add(new Vector(0, 0.1, 0)));
             }, 20);
@@ -54,6 +56,7 @@ public final class Supercave extends JavaPlugin {
             e.getWorld().spawnParticle(Particle.CRIT, e.getLocation().add(0, 1, 0), 30, 0.5, 0.5, 0.5, 0.1);
 
             Bukkit.getScheduler().runTaskLater(INSTANCE, () -> {
+                if (e.isDead()) return;
                 int arrowCount = (int) (Math.random() * 10) + 10;
                 for (int i = 0; i < arrowCount; i++) {
                     double angle = e.getLocation().getYaw() + 2 * i * Math.PI / arrowCount;
@@ -63,6 +66,28 @@ public final class Supercave extends JavaPlugin {
                 }
             }, 20);
         }, 3);
+        LeanMobGenerator.register(Zombie.class, e -> {
+            e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ZOMBIE_HURT, 1, 0.5f);
+            e.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, e.getLocation().add(0, 1, 0), 5, 0.5, 0.5, 0.5, 0.1);
+
+            for (int r = 1; r <= 10; r++) {
+                int radius = r;
+                Bukkit.getScheduler().runTaskLater(INSTANCE, () -> {
+                    if (e.isDead()) return;
+                    int particleCount = 4 * radius;
+                    for (int i = 0; i < particleCount; i++) {
+                        double angle = i * 2 * Math.PI / particleCount;
+                        Vector direction = new Vector(Math.cos(angle), 0.25, Math.sin(angle));
+                        e.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, e.getLocation().clone().add(direction.multiply(radius)), 3, 0.25, 0.25, 0.25, 0);
+                    }
+                    e.getNearbyEntities(radius, radius, radius).forEach(entity -> {
+                        if (entity.getLocation().distance(e.getLocation()) - radius <= 1 && entity.getLocation().getY() - e.getLocation().getY() <= 0.5) {
+                            entity.setVelocity(entity.getVelocity().setY(1.5));
+                        }
+                    });
+                }, 20 + 2 * r);
+            }
+        }, 5);
     }
 
     @Override
