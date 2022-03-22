@@ -18,12 +18,14 @@ public abstract class ParticleProjectile {
     private @Nullable final Entity shooter;
     private @NotNull Vector velocity;
     private @NotNull Location position;
+    private @NotNull Location previousPosition;
     private @NotNull final BukkitRunnable task;
 
     public ParticleProjectile(@Nullable Entity shooter, @NotNull Location position) {
         this.shooter = shooter;
         this.velocity = new Vector();
         this.position = position;
+        this.previousPosition = position;
         this.task = new BukkitRunnable() {
             @Override
             public void run() {
@@ -41,6 +43,7 @@ public abstract class ParticleProjectile {
 
     private void update() {
         // Velocity + position
+        previousPosition = position.clone();
         position.add(velocity);
         velocity.multiply(0.95);
         velocity.setY(velocity.getY() - 0.05);
@@ -78,14 +81,19 @@ public abstract class ParticleProjectile {
     }
 
     public @NotNull Vector getVelocity() {
-        return velocity;
+        return velocity.clone();
     }
 
     public @NotNull Location getPosition() {
-        return position;
+        return position.clone();
+    }
+
+    public @NotNull Location getPreviousPosition() {
+        return previousPosition.clone();
     }
 
     public void setPosition(@NotNull Location position) {
+        this.previousPosition = this.position.clone();
         this.position = position;
     }
 
