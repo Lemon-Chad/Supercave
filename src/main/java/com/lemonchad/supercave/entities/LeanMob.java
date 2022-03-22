@@ -28,10 +28,10 @@ public class LeanMob<T extends Monster> {
         decisionBoundary = Math.random();
         engaged = false;
 
-        entity.setMaxHealth(entity.getMaxHealth() * 2);
+        entity.setMaxHealth(entity.getMaxHealth() * 5);
         entity.setHealth(entity.getMaxHealth());
         //noinspection ConstantConditions
-        entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getBaseValue() * 2);
+        entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getBaseValue() * 3);
 
         StringBuilder name = new StringBuilder();
         name.append("§5§lLean ");
@@ -47,14 +47,18 @@ public class LeanMob<T extends Monster> {
     }
 
     private void tick() {
+        if (entity.isDead()) {
+            Bukkit.getScheduler().cancelTask(thread);
+        }
+
         if (!engaged && entity.getHealth() < entity.getMaxHealth()) {
             engaged = true;
             AutoBossbar.createBossBar(entity, 20, entity.getCustomName(), BarColor.PURPLE, BarStyle.SEGMENTED_6);
             entity.setCustomNameVisible(true);
         }
-        if (entity.isDead()) {
-            Bukkit.getScheduler().cancelTask(thread);
-        }
+
+        if (!engaged) return;
+
         if (Math.random() > gamma * decisionBoundary) {
             attack.attack(entity);
             decisionBoundary = delay + Math.random();
