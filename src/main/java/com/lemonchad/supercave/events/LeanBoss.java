@@ -49,7 +49,7 @@ public class LeanBoss implements Listener {
         Zombie entity = (Zombie) location.getWorld().spawnEntity(location, org.bukkit.entity.EntityType.ZOMBIE);
         entity.canBreakDoors();
         entity.setShouldBurnInDay(false);
-        entity.setCustomName("§5§lLean Zombie");
+        entity.setCustomName("§5§lLean King");
         entity.setCustomNameVisible(true);
         entity.setBaby(false);
         entity.setMaxHealth(80);

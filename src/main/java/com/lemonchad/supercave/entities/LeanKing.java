@@ -87,7 +87,7 @@ public class LeanKing {
             }
         });
 
-        AutoBossbar.createBossBar(entity, 20, "§5§lLean Zombie", BarColor.PURPLE, BarStyle.SOLID);
+        AutoBossbar.createBossBar(entity, 20, "§5§lLean King", BarColor.PURPLE, BarStyle.SOLID);
 
         decisionBoundary = 1;
         gamma = 1;
