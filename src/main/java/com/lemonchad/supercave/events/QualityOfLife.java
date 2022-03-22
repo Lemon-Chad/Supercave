@@ -38,14 +38,36 @@ public class QualityOfLife implements Listener {
         if (clickedBlock != null &&
                 clickedBlock.getType().equals(Material.SUGAR_CANE) &&
                 mainhand.getType().equals(Material.BONE_MEAL)) {
+
+            // Get top of sugar cane
+            Block nextBlock = clickedBlock.getLocation().clone().add(0, 1, 0).getBlock();
+            while (nextBlock.getType().equals(Material.SUGAR_CANE)) {
+                clickedBlock = nextBlock;
+                nextBlock = clickedBlock.getLocation().clone().add(0, 1, 0).getBlock();
+            }
+            // If there is no growing space, do nothing
+            if (!nextBlock.getType().equals(Material.AIR)) {
+                return;
+            }
+
+            // Consume bonemeal
             mainhand.setAmount(mainhand.getAmount() - 1);
-            if (mainhand.getAmount() == 0)
-                event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            Ageable cane = (Ageable) clickedBlock.getBlockData();
-            cane.setAge(cane.getMaximumAge());
-            clickedBlock.setBlockData(cane);
-            clickedBlock.getWorld().spawnParticle(Particle.COMPOSTER, clickedBlock.getLocation(), 5, 0.5, 0.5, 0.5);
-            event.setCancelled(true);
+
+            Ageable ageable = (Ageable) clickedBlock.getBlockData();
+            // Get threshold for random number based on age
+            int age = ageable.getAge();
+            double threshold = 1 - age / 15f;
+
+            // If random number is greater than threshold, grow
+            if (Math.random() > threshold) {
+                nextBlock.setType(Material.SUGAR_CANE);
+            } else {
+                // Otherwise, add age
+                ageable.setAge(age + 1);
+            }
+
+            // Spawn particles
+            clickedBlock.getWorld().spawnParticle(Particle.COMPOSTER, clickedBlock.getLocation(), (int) (Math.random() * 5 + 5), 0.5, 0.5, 0.5, 0);
         }
     }
 }
