@@ -57,6 +57,7 @@ public abstract class ParticleProjectile {
         if (block.getType() != Material.AIR) {
             // Initiate collision event
             ParticleProjectileHitEvent event = new ParticleProjectileHitEvent(this, block);
+            event.call();
             if (!event.isCancelled()) {
                 onHit(block);
             }
@@ -70,6 +71,7 @@ public abstract class ParticleProjectile {
             }).get();
             // Initiate collision event
             ParticleProjectileHitEvent event = new ParticleProjectileHitEvent(this, closest);
+            event.call();
             if (!event.isCancelled()) {
                 onHit(closest);
             }
