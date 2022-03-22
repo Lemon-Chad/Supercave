@@ -67,6 +67,7 @@ public class QualityOfLife implements Listener {
             } else {
                 // Otherwise, add age
                 ageable.setAge(age + 1);
+                clickedBlock.setBlockData(ageable);
             }
 
             // Spawn particles
