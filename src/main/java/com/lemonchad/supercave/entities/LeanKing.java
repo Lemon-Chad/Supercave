@@ -21,19 +21,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class LeanZombie {
+public class LeanKing {
     private final int thread;
     private final Zombie entity;
-    private final BossBar bossBar;
     private final Map<Action, Double> actionChances;
     private double decisionBoundary;
     private double gamma;
 
-    public LeanZombie(Zombie entity) {
+    public LeanKing(Zombie entity) {
         this.entity = entity;
         entity.setMetadata("leanZombie", new MetadataValue() {
             @Override
-            public @Nullable Object value() {
+            public @NotNull Object value() {
                 return true;
             }
 
@@ -88,9 +87,7 @@ public class LeanZombie {
             }
         });
 
-        bossBar = Bukkit.createBossBar("§5§lLean Zombie", BarColor.PURPLE, BarStyle.SOLID);
-        bossBar.setVisible(true);
-        Supercave.bars.add(bossBar);
+        AutoBossbar.createBossBar(entity, 20, "§5§lLean Zombie", BarColor.PURPLE, BarStyle.SOLID);
 
         decisionBoundary = 1;
         gamma = 1;
@@ -120,14 +117,6 @@ public class LeanZombie {
         actionChances.forEach((action, chance) -> actionChances.put(action, chance * 2));
         Bukkit.getLogger().info(actionChances.toString());
 
-        bossBar.setProgress(entity.getHealth() / entity.getMaxHealth());
-        bossBar.removeAll();
-        entity.getNearbyEntities(20, 20, 20).forEach(e -> {
-            if (e instanceof Player) {
-                bossBar.addPlayer((Player) e);
-            }
-        });
-
         gamma *= 0.99;
         if (gamma * decisionBoundary > Math.random()) {
             return;
@@ -139,9 +128,6 @@ public class LeanZombie {
 
     public void cleanup() {
         Bukkit.getScheduler().cancelTask(thread);
-        bossBar.removeAll();
-        bossBar.setVisible(false);
-        Supercave.bars.remove(bossBar);
     }
 
     interface Action {
