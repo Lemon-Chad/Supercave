@@ -1,11 +1,15 @@
 package com.lemonchad.supercave;
 
 import com.lemonchad.supercave.commands.LeanCommands;
+import com.lemonchad.supercave.entities.CobwebProjectile;
 import com.lemonchad.supercave.events.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Guardian;
+import org.bukkit.entity.Spider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +36,14 @@ public final class Supercave extends JavaPlugin {
         getCommand("summonleanzombie").setExecutor(commands);
 
         // Lean Mobs
-        LeanMobGenerator.register(Guardian.class, e -> e.setVelocity(e.getVelocity().setY(3)));
+        LeanMobGenerator.register(Spider.class, e -> {
+            e.getWorld().playSound(e.getLocation(), Sound.ENTITY_SPIDER_HURT, 1, 0.5f);
+            e.getWorld().spawnParticle(Particle.CLOUD, e.getLocation(), 15, 0.5, 0.5, 0.5, 0);
+            Bukkit.getScheduler().runTaskLater(INSTANCE, () -> {
+                CobwebProjectile projectile = new CobwebProjectile(e, e.getLocation());
+                projectile.setVelocity(e.getLocation().getDirection().multiply(2.25).add(new Vector(0, 0.1, 0)));
+            }, 20);
+        }, 1);
     }
 
     @Override
