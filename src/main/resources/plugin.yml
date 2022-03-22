@@ -1,0 +1,24 @@
+name: Supercave
+version: '${project.version}'
+main: com.lemonchad.supercave.Supercave
+api-version: 1.18
+description: https://knowyourmeme.com/memes/trollface
+commands:
+  givelean:
+    description: Gives you a bottle o' lean
+    usage: /<command>
+    aliases: []
+    # Requires administrator privileges
+    permission: "supercave.givelean"
+  giveleanarmor:
+    description: Gives you the full lean armor set
+    usage: /<command>
+    aliases: [ ]
+    # Requires administrator privileges
+    permission: "supercave.giveleanarmor"
+  summonleanzombie:
+    description: Summons a lean zombie
+    usage: /<command>
+    aliases: [ ]
+    # Requires administrator privileges
+    permission: "supercave.summonleanzombie"
