@@ -14,14 +14,16 @@ public class LeanMob<T extends Monster> {
     private double decisionBoundary;
     private boolean engaged;
     private final int thread;
+    private final float delay;
 
     public interface Attack<T extends Monster> {
         void attack(T entity);
     }
 
-    public LeanMob(T entity, Attack<T> attack) {
+    public LeanMob(T entity, Attack<T> attack, float delay) {
         this.entity = entity;
         this.attack = attack;
+        this.delay = delay;
         gamma = 1.0;
         decisionBoundary = Math.random();
         engaged = false;
@@ -55,7 +57,7 @@ public class LeanMob<T extends Monster> {
         }
         if (Math.random() > gamma * decisionBoundary) {
             attack.attack(entity);
-            decisionBoundary = 1 + Math.random();
+            decisionBoundary = delay + Math.random();
             gamma = 1.0;
         }
         gamma *= 0.99;

@@ -13,9 +13,12 @@ public class LeanMobGenerator<T extends Monster> implements Listener {
 
     private final Class<T> clazz;
     private final LeanMob.Attack<T> attack;
-    public LeanMobGenerator(Class<T> clazz, LeanMob.Attack<T> attack) {
+    private final float delay;
+
+    public LeanMobGenerator(Class<T> clazz, LeanMob.Attack<T> attack, float delay) {
         this.clazz = clazz;
         this.attack = attack;
+        this.delay = delay;
     }
 
     @EventHandler
@@ -25,13 +28,17 @@ public class LeanMobGenerator<T extends Monster> implements Listener {
                     event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL &&
                     Math.random() < 1f / CHANCE) {
                 //noinspection unchecked
-                new LeanMob<>((T) event.getEntity(), attack);
+                new LeanMob<>((T) event.getEntity(), attack, delay);
             }
         }
     }
 
     public static <T extends Monster> void register(Class<T> clazz, LeanMob.Attack<T> attack) {
-        Bukkit.getPluginManager().registerEvents(new LeanMobGenerator<>(clazz, attack), Supercave.INSTANCE);
+        register(clazz, attack, 1);
+    }
+
+    public static <T extends Monster> void register(Class<T> clazz, LeanMob.Attack<T> attack, float delay) {
+        Bukkit.getPluginManager().registerEvents(new LeanMobGenerator<>(clazz, attack, delay), Supercave.INSTANCE);
     }
 
 }
