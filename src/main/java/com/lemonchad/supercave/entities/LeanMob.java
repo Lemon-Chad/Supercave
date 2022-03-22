@@ -2,6 +2,7 @@ package com.lemonchad.supercave.entities;
 
 import com.lemonchad.supercave.Supercave;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Monster;
@@ -12,6 +13,7 @@ public class LeanMob<T extends Monster> {
     private double gamma;
     private double decisionBoundary;
     private boolean engaged;
+    private final int thread;
 
     public interface Attack<T extends Monster> {
         void attack(T entity);
@@ -26,6 +28,8 @@ public class LeanMob<T extends Monster> {
 
         entity.setMaxHealth(entity.getMaxHealth() * 2);
         entity.setHealth(entity.getMaxHealth());
+        //noinspection ConstantConditions
+        entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getBaseValue() * 2);
 
         StringBuilder name = new StringBuilder();
         name.append("§5§lLean ");
@@ -37,7 +41,7 @@ public class LeanMob<T extends Monster> {
 
         entity.setCustomName(name.substring(0, name.length() - 1));
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Supercave.INSTANCE, this::tick, 0, 1);
+        thread = Bukkit.getScheduler().scheduleSyncRepeatingTask(Supercave.INSTANCE, this::tick, 0, 1);
     }
 
     private void tick() {
@@ -46,9 +50,12 @@ public class LeanMob<T extends Monster> {
             AutoBossbar.createBossBar(entity, 20, entity.getCustomName(), BarColor.PURPLE, BarStyle.SEGMENTED_6);
             entity.setCustomNameVisible(true);
         }
+        if (entity.isDead()) {
+            Bukkit.getScheduler().cancelTask(thread);
+        }
         if (Math.random() > gamma * decisionBoundary) {
             attack.attack(entity);
-            decisionBoundary = Math.random();
+            decisionBoundary = 1 + Math.random();
             gamma = 1.0;
         }
         gamma *= 0.99;
