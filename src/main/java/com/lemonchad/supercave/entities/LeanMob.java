@@ -1,6 +1,7 @@
 package com.lemonchad.supercave.entities;
 
 import com.lemonchad.supercave.Supercave;
+import com.lemonchad.supercave.items.SupercaveItems;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
@@ -49,6 +50,8 @@ public class LeanMob<T extends Monster> {
     private void tick() {
         if (entity.isDead()) {
             Bukkit.getScheduler().cancelTask(thread);
+            entity.getWorld().dropItem(entity.getLocation(), SupercaveItems.LEAN);
+            return;
         }
 
         if (!engaged && entity.getHealth() < entity.getMaxHealth()) {
