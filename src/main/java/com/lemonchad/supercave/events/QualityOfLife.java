@@ -2,10 +2,13 @@ package com.lemonchad.supercave.events;
 
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -68,6 +71,19 @@ public class QualityOfLife implements Listener {
 
             // Spawn particles
             clickedBlock.getWorld().spawnParticle(Particle.COMPOSTER, clickedBlock.getLocation(), (int) (Math.random() * 5 + 5), 0.5, 0.5, 0.5, 0);
+        }
+    }
+
+    @EventHandler
+    public void onParticleProjectileHit(ParticleProjectileHitEvent event) {
+        Entity hitEntity = event.getHitEntity();
+        if (hitEntity instanceof Player) {
+            Player player = (Player) hitEntity;
+            if (player.isBlocking()) {
+                event.setCancelled(true);
+                event.getProjectile().kill();
+                player.getLocation().getWorld().playSound(player.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1, 1);
+            }
         }
     }
 }
