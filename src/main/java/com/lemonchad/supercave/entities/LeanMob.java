@@ -5,6 +5,7 @@ import com.lemonchad.supercave.items.SupercaveItems;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -71,6 +72,8 @@ public class LeanMob<T extends Monster> {
             entity.getWorld().dropItem(entity.getLocation(), SupercaveItems.LEAN);
             return;
         }
+
+        entity.getWorld().spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 1, 0.5, 0.5, 0.5, 0);
 
         if (!engaged && entity.getHealth() < entity.getMaxHealth()) {
             engaged = true;
