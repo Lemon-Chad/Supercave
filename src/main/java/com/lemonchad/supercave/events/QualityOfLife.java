@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -40,7 +41,8 @@ public class QualityOfLife implements Listener {
         Block clickedBlock = event.getClickedBlock();
         if (clickedBlock != null &&
                 clickedBlock.getType().equals(Material.SUGAR_CANE) &&
-                mainhand.getType().equals(Material.BONE_MEAL)) {
+                mainhand.getType().equals(Material.BONE_MEAL) &&
+                event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
             // Get top of sugar cane
             Block nextBlock = clickedBlock.getLocation().clone().add(0, 1, 0).getBlock();
