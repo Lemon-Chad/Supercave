@@ -16,6 +16,12 @@ commands:
     aliases: [ ]
     # Requires administrator privileges
     permission: "supercave.giveleanarmor"
+  summonleanking:
+    description: Summons the lean king
+    usage: /<command>
+    aliases: [ ]
+    # Requires administrator privileges
+    permission: "supercave.summonleanking"
   summonleanzombie:
     description: Summons a lean zombie
     usage: /<command>

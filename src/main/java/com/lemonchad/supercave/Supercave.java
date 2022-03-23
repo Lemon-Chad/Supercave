@@ -38,6 +38,7 @@ public final class Supercave extends JavaPlugin {
         LeanCommands commands = new LeanCommands();
         getCommand("givelean").setExecutor(commands);
         getCommand("giveleanarmor").setExecutor(commands);
+        getCommand("summonleanking").setExecutor(commands);
         getCommand("summonleanzombie").setExecutor(commands);
 
         // Lean Mobs
@@ -71,6 +72,7 @@ public final class Supercave extends JavaPlugin {
 
             for (int r = 1; r <= 10; r++) {
                 int radius = r;
+                //noinspection DuplicatedCode
                 Bukkit.getScheduler().runTaskLater(INSTANCE, () -> {
                     if (e.isDead()) return;
                     int particleCount = 4 * radius;
