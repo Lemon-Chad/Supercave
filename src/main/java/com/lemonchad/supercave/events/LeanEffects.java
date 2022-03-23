@@ -8,9 +8,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,6 +35,7 @@ import java.util.UUID;
 
 public class LeanEffects implements Listener {
     public static final float CHANCE = 300;
+    public static final float ENDERCHANCE = 250;
     public static final UUID MODUUID = UUID.fromString("c8f9f8e0-e9b9-11e9-b210-d663bd873d93");
 
     public final Map<Player, Integer> leanLevel;
@@ -55,6 +54,13 @@ public class LeanEffects implements Listener {
             // Summon lean on death spot
             World world = event.getEntity().getWorld();
             world.dropItem(event.getEntity().getLocation(), SupercaveItems.LEAN);
+        }
+        if ((event.getEntity() instanceof Enderman) || (event.getEntity() instanceof Shulker) || (event.getEntity() instanceof EnderDragon) || (event.getEntity() instanceof Endermite)) {
+            if (Math.random() < 1f / ENDERCHANCE) {
+                // Summon lean on death spot
+                World world = event.getEntity().getWorld();
+                world.dropItem(event.getEntity().getLocation(), SupercaveItems.LEAN);
+            }
         }
     }
 
