@@ -18,24 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
 public class QualityOfLife implements Listener {
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        Block block = event.getBlock();
-        if (block.getType().equals(Material.SPAWNER) && event.getPlayer().getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
-            ItemStack item = new ItemStack(Material.SPAWNER);
 
-            CreatureSpawner oldSpawner = (CreatureSpawner) block.getState();
-            BlockStateMeta meta = (BlockStateMeta) item.getItemMeta();
-            CreatureSpawner newSpawner = (CreatureSpawner) meta.getBlockState();
-            newSpawner.setSpawnedType(oldSpawner.getSpawnedType());
-            meta.setBlockState(newSpawner);
-            item.setItemMeta(meta);
-
-            block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-            event.getBlock().setType(Material.AIR);
-            event.setCancelled(true);
-        }
-    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
