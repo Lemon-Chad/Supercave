@@ -28,6 +28,8 @@ public class QualityOfLife implements Listener {
             BlockStateMeta meta = (BlockStateMeta) item.getItemMeta();
             CreatureSpawner newSpawner = (CreatureSpawner) meta.getBlockState();
             newSpawner.setSpawnedType(oldSpawner.getSpawnedType());
+            meta.setBlockState(newSpawner);
+            item.setItemMeta(meta);
 
             block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
             event.getBlock().setType(Material.AIR);
